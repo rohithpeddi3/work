@@ -58,6 +58,41 @@ Formatting a date for the current locale:
 ### ThreadLocal storage
 - A single instance of ThreadLocal can store different values for each thread independently. 
 - Therefore, the value stored in a ThreadLocal instance is specific (local) to the current running thread and any other code logic running on the same thread will see the same value, but not the values set on the same instance by other threads.
-#### Internals of ThreadLocal
+- In a single threaded environment,with a static field used, then a getter of ID can obtain current transaction.
+- In multithreaded environment each thread generates its own ID and overrides the static field.
 
+Example:
+```java
+public class TransactionManager {
+   private static final ThreadLocal<String> context = new ThreadLocal<String>();
+   public static void startTransaction() {
+      //logic to start a transaction
+      //...
+      context.set(generatedId); 
+   }
+   public static String getTransactionId() { 
+      return context.get();
+   }
+   public static void endTransaction() {
+      //logic to end a transaction
+      //…
+      context.remove();
+   }
+}
+
+```
+
+### Internals of ThreadLocal
+- ThreadLocal is implemented by having a map(ThreadLocalMap) as a field (with a WeakReference entry) within each thread instance.
+
+   > Weak Refereces are those which are not strong enough to enforce object to be in memory. They allow you to leverage the garbage collectors reachability to you. While Softreferences which are used in cache can are also weakly referenced but depends on the availability of memory.
+   
+- The keys of those maps are the corresponding ThreadLocals themselves. 
+- Therefore, when a set/get is called on a ThreadLocal, it looks at the current thread, finds the map, and looks up the value with “this” ThreadLocal instance.
+ 
+   > Client JRE always keeps its footprint small by removing soft references rather than expanding heap, while in Server JRE
+   to improve performace heap is maximised rather than removing soft references
+
+- The value object put into the ThreadLocal would not purge itself if there are no more strong references to it. 
+- Instead, the weak reference is done on the thread instance, which means Java garbage collection would clean up the ThreadLocal map if the thread itself is not strongly referenced elsewhere.
 
