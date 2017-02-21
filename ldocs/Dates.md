@@ -55,5 +55,9 @@ Formatting a date for the current locale:
 
 > DateTimeFormatter in Java 8 is immutable and thread-safe alternative to SimpleDateFormat.
 
+### ThreadLocal storage
+- A single instance of ThreadLocal can store different values for each thread independently. 
+- Therefore, the value stored in a ThreadLocal instance is specific (local) to the current running thread and any other code logic running on the same thread will see the same value, but not the values set on the same instance by other threads.
+#### Internals of ThreadLocal
 
 
