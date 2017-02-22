@@ -119,6 +119,6 @@ public class TransactionManager {
 
 ### DateTimeFormatter
 - It uses concurrentHashMap internally to access a particular element and thus has performance issues.
-   >It is preferred to use Threadlocal class over DateTimeFormatter considering the performance.
+   > It is preferred to use Threadlocal class over DateTimeFormatter considering the performance.
    
 
