@@ -96,3 +96,29 @@ public class TransactionManager {
 - The value object put into the ThreadLocal would not purge itself if there are no more strong references to it. 
 - Instead, the weak reference is done on the thread instance, which means Java garbage collection would clean up the ThreadLocal map if the thread itself is not strongly referenced elsewhere.
 
+- Naive Implementation of ThreadLocal<T>
+      - ConcurrentHashMap<Thread,T> using Thread.currentThread() as its key. 
+      - Disadvantages
+         - Thread contention - slowdown in performance
+         - Permanently keeps a pointer to both thread and the object, even after thread has finished and could be GC'ed
+
+- The GC friendly implementation
+      - ```java   Collections.synchronizedMap(new WeakHashMap<Thread,T>())    ```
+      - No one else is holding onto key after finishing thread and can be GC'ed
+      - Disadvantages
+         - Thread contention still prevails
+         - If in some environment threads are hold onto after they'd finished, they would never be GC'ed
+
+- The clever implementation
+      - We've been thinking about ThreadLocal as a mapping of threads to values, but maybe that's not actually the right way to think about it. 
+      - Instead of thinking of it as a mapping from Threads to values in each ThreadLocal object, what if we thought about it as a mapping of ThreadLocal objects to values in each Thread? 
+      - If each thread stores the mapping, and ThreadLocal merely provides a nice interface into that mapping, we can avoid all of the issues of the previous implementations.
+      
+      ```java new WeakHashMap<ThreadLocal,T> ```
+      - Only one thread will ever be accessing this map
+
+### DateTimeFormatter
+- It uses concurrentHashMap internally to access a particular element and thus has performance issues.
+   >It is preferred to use Threadlocal class over DateTimeFormatter considering the performance.
+   
+
