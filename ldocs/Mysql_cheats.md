@@ -1,6 +1,6 @@
 - Starting with a vowel query
 
-  > ```MySQL SELECT DISTINCT CITY FROM STATION WHERE CITY RLIKE '^[AEIOUaeiou].*$'; ```
+  > SELECT DISTINCT CITY FROM STATION WHERE CITY RLIKE '^[AEIOUaeiou].*$'; 
   
 - Does not start with a vowel; add a NOT to above statement 
 
