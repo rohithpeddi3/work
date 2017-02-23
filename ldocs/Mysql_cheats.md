@@ -21,5 +21,4 @@
                 STATION WHERE CITY NOT RLIKE '^[AEIOUaeiou].*$') AS T
     WHERE CITY NOT RLIKE '^.*[AEIOUaeiou]$';
     
- - Use ORDER BY RIGHT(NAME,3), if you need to order it based on last three letters of column.
- - 
+ - Use ORDER BY RIGHT(NAME,3), if you need to order it based on last three letters of column. 
