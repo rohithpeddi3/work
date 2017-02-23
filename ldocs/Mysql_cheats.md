@@ -21,4 +21,24 @@
                 STATION WHERE CITY NOT RLIKE '^[AEIOUaeiou].*$') AS T
     WHERE CITY NOT RLIKE '^.*[AEIOUaeiou]$';
     
- - Use ORDER BY RIGHT(NAME,3), if you need to order it based on last three letters of column. 
+- Use ORDER BY RIGHT(NAME,3), if you need to order it based on last three letters of column. 
+
+- For If else statements case can be used in MySQL and purpose can be solved.
+
+      ```java
+          SELECT 
+                CASE
+                    WHEN (A=B AND B=C) THEN 'Equilateral'
+                    WHEN (A+B>C AND B+C>A AND C+A>B) 
+                        THEN 
+                            CASE
+                                WHEN (A=B OR B=C OR C=A) THEN 'Isosceles'
+                                ELSE 'Scalene'
+                            END
+                    ELSE 'Not A Triangle'
+                END
+          FROM TRIANGLES;      
+      ```
+  
+  
+  
