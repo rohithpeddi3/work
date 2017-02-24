@@ -33,8 +33,8 @@
 
 - For If else statements case can be used in MySQL and purpose can be solved.
   To check whether columns in a row correspond to a triangle or not.
-
-      ```java
+  
+  ```java
           SELECT 
                 CASE
                     WHEN (A=B AND B=C) THEN 'Equilateral'
@@ -47,7 +47,7 @@
                     ELSE 'Not A Triangle'
                 END
           FROM TRIANGLES;      
-      ```
+  ```
 
   
   
