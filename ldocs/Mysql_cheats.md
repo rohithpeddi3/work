@@ -24,6 +24,7 @@
 - Use ORDER BY RIGHT(NAME,3), if you need to order it based on last three letters of column. 
 
 - For If else statements case can be used in MySQL and purpose can be solved.
+  To check whether columns in a row correspond to a triangle or not.
 
       ```java
           SELECT 
@@ -39,6 +40,6 @@
                 END
           FROM TRIANGLES;      
       ```
-  
+-  
   
   
