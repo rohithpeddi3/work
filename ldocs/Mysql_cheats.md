@@ -48,6 +48,20 @@
                 END
           FROM TRIANGLES;      
   ```
+  
+- When we need to join two tables with one table having a value and the other a range then we do it using INNER JOIN as
+
+  ```java
+     
+     SELECT Name, G.Grade, S.Marks 
+           FROM Students S 
+           INNER JOIN Grades G 
+           ON S.Marks 
+               BETWEEN G.Min_Mark and G.Max_Mark 
+           ORDER BY G.Grade DESC,Name,Marks     
+  ```
+  
+- 
 
   
   
