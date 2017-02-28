@@ -12,15 +12,16 @@ IoC container
 
 Container
 ---------
-- The BeanFactory interface is the central IoC container interface in Spring. 
-- Its responsibilities include instantiating or sourcing application objects, configuring such objects, and assembling the dependencies between these objects.
-- There are a number of implementations of the BeanFactory interface that come supplied straight out-of-the-box with Spring. 
-- The most commonly used BeanFactory implementation is the XmlBeanFactory class. 
-- This implementation allows you to express the objects that compose your application, and interdependencies between such objects, in terms of XML. 
-- The XmlBeanFactory takes this XML configuration metadata and uses it to create a fully configured system or application.
 
-- **Configuration metadata + Spring container +  Your business objects = *Fully configured system* **
+- The BeanFactory interface is the central IoC container interface in Spring. Its responsibilities include instantiating or sourcing application objects, configuring such objects, and assembling the dependencies between these objects. There are a number of implementations of the BeanFactory interface that come supplied straight out-of-the-box with Spring. The most commonly used BeanFactory implementation is the XmlBeanFactory class. This implementation allows you to express the objects that compose your application, and interdependencies between such objects, in terms of XML. The XmlBeanFactory takes this XML configuration metadata and uses it to create a fully configured system or application.
+
+- **Configuration metadata + Spring container +  Your business objects** = ***Fully configured system***.
 
 - Configuration metadata informs the Spring container how to “instantiate, configure, and assemble [objects in your application]”
-- Spring configuration consists of at least one bean definition that the container must manage.
-- When using XML-based configuration metadata, these beans are configured as ```<bean/> ```elements inside a top-level ```<beans/>``` element.
+- Spring configuration consists of at least one bean definition that the container must manage. When using XML-based configuration metadata, these beans are configured as ```<bean/> ```elements inside a top-level ```<beans/>``` element.
+
+- These bean definitions correspond to the actual objects that make up your application. Typically you have bean definitions for: 
+        - your service layer objects
+        - your data access objects (DAOs)
+        - presentation objects such as Struts Action instances
+        - infrastructure objects such as Hibernate SessionFactories, JMS Queues, and so forth. Typically one does not configure fine-grained domain objects in the container, because it is usually the responsibility of DAOs and business logic to create/load domain objects.
