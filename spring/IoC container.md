@@ -19,6 +19,8 @@ Container
 - This implementation allows you to express the objects that compose your application, and interdependencies between such objects, in terms of XML. 
 - The XmlBeanFactory takes this XML configuration metadata and uses it to create a fully configured system or application.
 
-![Image](http://docs.spring.io/spring/docs/2.5.x/reference/images/container-magic.png?raw=true)
+- **Configuration metadata + Spring container +  Your business objects = *Fully configured system* **
 
-- 
+- Configuration metadata informs the Spring container how to “instantiate, configure, and assemble [objects in your application]”
+- Spring configuration consists of at least one bean definition that the container must manage.
+- When using XML-based configuration metadata, these beans are configured as ```<bean/> ```elements inside a top-level ```<beans/>``` element.
