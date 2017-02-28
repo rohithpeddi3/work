@@ -1,4 +1,7 @@
 
+IoC container
+-------------
+
 - org.springframework.beans and org.springframework.context packages provide the basis for the Spring Framework's IoC container
     - BeanFactory provides the configuration framework and basic functionality
     - ApplicationContext adds more enterprise-centric functionality to it.
@@ -16,5 +19,4 @@ Container
 - This implementation allows you to express the objects that compose your application, and interdependencies between such objects, in terms of XML. 
 - The XmlBeanFactory takes this XML configuration metadata and uses it to create a fully configured system or application.
 
-![](http://docs.spring.io/spring/docs/2.5.x/reference/images/container-magic.png?raw=true)
-
+![alt tag](http://docs.spring.io/spring/docs/2.5.x/reference/images/container-magic.png)
