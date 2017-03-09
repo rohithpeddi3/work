@@ -62,7 +62,7 @@ Two possible ways:
 - ```javascript var re = new RegExp('/d(b+)d/','g'); 
       var reArray = re.exec('cdbbdbsbz'); ```
 
-- Paranthesized substring matches
+Paranthesized substring matches
 ```javascript
   var re = /(\w+)\s(\w+)/;
   var str = 'John Smith';
@@ -71,7 +71,7 @@ Two possible ways:
   
   //prints Smith,John  
 ```
-- Advanced searching with flags
+Advanced searching with flags
 ```javascript /ab+c/g ```
 
 Flag | Description
