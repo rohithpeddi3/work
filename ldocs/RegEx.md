@@ -14,7 +14,7 @@ There are two ways of creating a RegEx:
 
 - Using simple patterns Eg: ```javascript /abc/,/baba/ ```.
 - Using special characters
-    -  character | meaning
+       character | meaning
        ----------|---------
        \ | if it precedes a non special character then it forms word boundary character, else removes the speciality of special one
        ^ | matches beginning of input. ```javascript /^A/ does not match the 'A' in "an A", but does match the 'A' in "An E" ```.
@@ -27,4 +27,5 @@ There are two ways of creating a RegEx:
        (?:x) | matches x but doesn't remember it. Non capturing paranthesis.
        x(?=y) | matches only if x is followed by y, called lookahead. 
        x(?!y) | matches only if x is not followed by y, called negated lookahead.
+       (x\|y) | matches if x or y.
        
