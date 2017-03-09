@@ -14,18 +14,19 @@ There are two ways of creating a RegEx:
 
 - Using simple patterns Eg: ```javascript /abc/,/baba/ ```.
 - Using special characters
-       character | meaning
-       ----------|---------
-       \ | if it precedes a non special character then it forms word boundary character, else removes the speciality of special one
-       ^ | matches beginning of input. ```javascript /^A/ does not match the 'A' in "an A", but does match the 'A' in "An E" ```.
-       $ | matches end of input. ```javascript /^t/ does not match /eater/ while matches /eat/ ```.
-       * | matches preceeding expression 0 or more times. 
-       + | matches preceeding expression 1 or more times.
-       ? | matches preceeding expression 0 or 1 time.
-       . | matches any single character exccept new line character.
-       (x) | matches x and remembers the match. capturing paranthesis.
-       (?:x) | matches x but doesn't remember it. Non capturing paranthesis.
-       x(?=y) | matches only if x is followed by y, called lookahead. 
-       x(?!y) | matches only if x is not followed by y, called negated lookahead.
-       (x\|y) | matches if x or y.
+      
+character | meaning
+----------|---------
+\ | if it precedes a non special character then it forms word boundary character, else removes the speciality of special one
+^ | matches beginning of input. ```javascript /^A/ does not match the 'A' in "an A", but does match the 'A' in "An E" ```.
+$ | matches end of input. ```javascript /^t/ does not match /eater/ while matches /eat/ ```.
+* | matches preceeding expression 0 or more times. 
++ | matches preceeding expression 1 or more times.
+? | matches preceeding expression 0 or 1 time.
+. | matches any single character exccept new line character.
+(x) | matches x and remembers the match. capturing paranthesis.
+(?:x) | matches x but doesn't remember it. Non capturing paranthesis.
+x(?=y) | matches only if x is followed by y, called lookahead. 
+x(?!y) | matches only if x is not followed by y, called negated lookahead.
+(x\|y) | matches if x or y.
        
