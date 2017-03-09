@@ -44,6 +44,40 @@ x(?!y) | matches only if x is not followed by y, called negated lookahead.
 \r | matches carriage return
 \t | matches a tab.
 \w | matches any alpha numeric character.
+\s | single white space character.
 
+#### Working with regular expressions
+
+Method | Description
+-------|------------
+exec | A RegExp method that executes a search for a match in a string and returns an array of information or null on a mismatch.
+test | A RegExp method that tests for a match in a string and returns true or false.
+match | A String method that executes a search for a match in a string and returns an array of information or null on a mismatch.
+search | A String method that executes a search for a match in a string and returns the index of the match or -1.
+replace | A string method that executes a search and replaces that with a new substring if matched.
+split | A string method to break a string into array of substrings.
+
+Two possible ways:
+- ```javascript var reArray = /d(b+)d/g.exec('cdbbdbsbz') ```
+- ```javascript var re = new RegExp('/d(b+)d/','g'); 
+      var reArray = re.exec('cdbbdbsbz'); ```
+
+- Paranthesized substring matches
+```javascript
+  var re = /(\w+)\s(\w+)/;
+  var str = 'John Smith';
+  var newstr = str.replace(re, '$2, $1');
+  console.log(newstr);
+  
+  //prints Smith,John  
+```
+- Advanced searching with flags
+```javascript /ab+c/g ```
+
+Flag | Description
+-----|------------
+g | global search
+i | case insensitive search
+m | multi line search
 
        
