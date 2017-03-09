@@ -29,4 +29,21 @@ $ | matches end of input. ```javascript /^t/ does not match /eater/ while matche
 x(?=y) | matches only if x is followed by y, called lookahead. 
 x(?!y) | matches only if x is not followed by y, called negated lookahead.
 (x\|y) | matches if x or y.
+{n} | matches n occurences of a character.
+{n,m} | matches atleast n and atmost m characters.
+\[xyz\] | matches anyone of the characters in the brackets.
+\[^x-z\] | matches any character not included in the brackets.
+[\b] | matches backspace character.
+\d | matches a digit character. 
+\D | matches a non-digit character.
+\0 | matches a NULL(U+0000) character.
+\xhh | matches the character with code hh (two hexadecimal digits).
+\uhhhh | matches the character with code hhhh (four hexadecimal digits).
+\f | matches a form feed (U+000C). a page break inserted
+\n | matches a line feed (U+000A). a new line
+\r | matches carriage return
+\t | matches a tab.
+\w | matches any alpha numeric character.
+
+
        
