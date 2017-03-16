@@ -1,0 +1,13 @@
+#wrapper {
+	width: 100%;
+	height: 650px;
+}
+
+svg {
+    border: 1px solid #000;
+}
+
+#mySVG {
+	width:1280px;
+	height: 650px;
+}
