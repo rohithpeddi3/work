@@ -2,7 +2,8 @@
 -----------------------------
 ### SCOPES
 - Commonly referred by term lexical scope, which describes regions in the source code where you can refer to the variable by name without getting access errors.
-- ```javascript 
+
+```javascript 
     
     var global_variable = returnGlobal(); //variable in the global scope
     var new_lexicalScope = function() {
@@ -15,8 +16,8 @@
     };     
     log(global_variable);
     log(unknown);     
-
 ```
+
 - Blocks on ```javascript if(){ }, while(){ }, for(){ } ``` donot create new scopes. 
 - Javascript allows only curly braces on the functions to create new scopes.
 
@@ -24,7 +25,8 @@
 - When a program runs, it builds up storage systems for the variables and values, these in memory scope structures are called execution contexts.
 - Execution contexts differ from lexical scopes, they are built as the program runs and not as its typed.
 - So for each lexical scope there may be many in memory scopes or there may be none.
-- ```javascript 
+
+```javascript 
 
   var sector = returnIT(); // Interpreter builds up a new key value mapping {sector = "IT";}
   var company = function(){
