@@ -122,5 +122,19 @@ fn(3,4);           //this is bound to 'global' object
 
 ### PROTOTYPE CHAINS
 --------------------
-- 
+- They are a mechanism that makes objects resemble other objects, failed lookups of one object are delegated to the other object.
+
+```javascript
+
+    var gold={a:1};
+    var blue={};    // blue = extend({},gold) copying all the methods to the blue object
+    var rose = Object.create(gold); //failed lookups to rose are delegated to gold
+    
+```
+- All the objects delegate failed lookups to 'object prototype'.
+- .constructor points to a different object in the object prototype iff current doesn't havev one, which is used to make objects.
+
+### OBJECT DECORATOR PATTERN
+----------------------------
+
 
