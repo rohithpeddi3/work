@@ -92,8 +92,35 @@
     - A new instance of the created function object.
     - Newly created inmemory obj(As the function can be included in two objects, so 'this' has to choose between two objects).
     - obj.fn(3,4). {a=3,b=4} in memory object created due to mapping. javascript doesn't give you any memory ref access.
-    
+
+
 ```javascript 
-    obj.fn(3,4) //the object that is looked up to call the function is the thing that 'this' would be bound to.
+    obj.fn(3,4) 
 ```
+
+- The object that is looked up to call the function is the thing 'this' would be bound to.
+- The object that is left of the dot where containing function is called.
+
+```javascript 
+    var fn = function(a,b){
+        log(this,a,b);
+    };
+    
+fn(3,4);           //this is bound to 'global' object
+    
+    r= {};
+    r.method = fn;
+    r.method(3,4); //this has the object 'r', also applicable to r['method'](g,b)
+
+```
+- In order bind 'this' to object 'r' we can use ```java fn.call(r,3,4) ```. 
+
+```javascript 
+    new r.method(3,4); // 'this' is bound to a brand new object.
+```
+- 'this' helps in creation of one function object and use it with any object being associated.
+
+### PROTOTYPE CHAINS
+--------------------
 - 
+
