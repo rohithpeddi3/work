@@ -71,3 +71,29 @@
 
 ### KEYWORD 'this'
 -----------------
+- 'this' is an identifier that gets a value bind to it, same like a variable,but it gets bound to correct object automatically
+```javascript
+
+    var fn = function(a,b){
+        log(this);              
+    };
+    
+    var ob2 = {method: fn};
+    
+    var obj = {
+        fn: function(a,b){
+            log(this);
+        }
+    };
+    
+```
+- 'this' is not bound to 
+    - When interpreter hits the function object, it creates ```java {f} ``` in memory.
+    - A new instance of the created function object.
+    - Newly created inmemory obj(As the function can be included in two objects, so 'this' has to choose between two objects).
+    - obj.fn(3,4). {a=3,b=4} in memory object created due to mapping. javascript doesn't give you any memory ref access.
+    
+```javascript 
+    obj.fn(3,4) //the object that is looked up to call the function is the thing that 'this' would be bound to.
+```
+- 
