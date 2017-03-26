@@ -47,3 +47,27 @@
 - They are a deceptive similarity as both of them are kept so different by the interpreter.
 - Many of the rules of the objects will also happen to be true for the execution contexts. Ex: it is not possible to store an array full of contexts unlike objects.
 - For printing the log(), interpreter moves from current context to closest containing context
+
+### CLOSURES
+------------
+
+```javascript 
+  var teams = [];  
+  var sector = returnIT(); 
+  var company = function(){
+    var platform = returnPlatform();
+    teams.push(function(){  
+      var size = returnSize();
+      log(sector+platform+size);
+    }); 
+  };                                
+  company();  //can be done by setting a timeout, storing in a global variable, returning the variable;
+  teams[0](); // {teams=[{f}],sector="IT",company={f},{platform="Java", {size="10"} }}
+  teams[0](); // {teams=[{f}],sector="IT",company={f},{platform="Java", {size="10"}, {size="15"} }}
+  company();  // {teams=[{f},{f}],sector="IT",company={f}, {platform="Java", {size="10"},{size="15"}}, {platform="Python"} }
+
+```
+- Execution context creation long after lexical scope has returned.
+
+### KEYWORD 'this'
+-----------------
