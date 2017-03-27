@@ -136,5 +136,34 @@ fn(3,4);           //this is bound to 'global' object
 
 ### OBJECT DECORATOR PATTERN
 ----------------------------
+```javascript
+    
+    var JaVa = software({},9);
+    var AnGularJS = software({},2.0);
+    
+    var software = function(obj,version){ 
+        obj.ver = version;
+        return obj;
+    };
 
+```
+- Function taking an object as input and augmenting required methods to it is qualified as a decorator.
 
+```javascript
+
+    var software = function(obj,version){ 
+        obj.ver = version;
+        obj.up = upgrade;
+        return obj;
+    };
+    
+    var upgrade = function(){
+        this.ver++;             //usage of this keyword
+    };
+
+```
+- upgrade function can be put in software object but it leads to creation of many upgrade objects [HIGH PRICE].
+- Decorator: Adding new functionality to an object.
+
+### FUNCTIONAL CLASSES
+----------------------
