@@ -138,10 +138,10 @@ fn(3,4);           //this is bound to 'global' object
 ----------------------------
 ```javascript
     
-    var JaVa = software({},9);
-    var AnGularJS = software({},2.0);
+    var JaVa = Software({},9);
+    var AnGularJS = Software({},2.0);
     
-    var software = function(obj,version){ 
+    var Software = function(obj,version){ 
         obj.ver = version;
         return obj;
     };
@@ -151,7 +151,7 @@ fn(3,4);           //this is bound to 'global' object
 
 ```javascript
 
-    var software = function(obj,version){ 
+    var Software = function(obj,version){ 
         obj.ver = version;
         obj.up = upgrade;
         return obj;
@@ -167,3 +167,110 @@ fn(3,4);           //this is bound to 'global' object
 
 ### FUNCTIONAL CLASSES
 ----------------------
+- Difference between a class and decorator is, the former creates one and the later accepts one before adding functionalities.
+
+```javascript
+
+    var Software = function(version){ 
+        var obj={ver:version};
+        var upgrade = function(){
+            obj.ver++;             
+        };
+        return obj;
+    };   
+    
+```
+- Functions such as above which produce fleets of similar objects are called constructor functions.
+- Functional shared pattern
+
+```javascript
+
+    var Software = function(version){ 
+        var obj = {ver:version};
+        obj.up = upgrade;
+        return obj;
+    };
+    
+    var upgrade = function(){
+        this.ver++;            
+    };
+
+```
+- If there are multiple methods then it is better to refactor all the methods in methods obj
+
+```javascript
+
+    var Software = function(version){ 
+        var obj = {ver:version};
+        extend(obj,Software.methods);            //It is not a native javascript function
+        return obj;
+    };
+    
+    Software.methods = {                         //Functions are special type of objects
+        upgrade: function(){
+            this.ver++;
+        }
+    };
+
+```
+- Class:Any construct that is capable of building a fleet of similar objects.
+
+### PROTOTYPICAL CLASSES
+------------------------
+
+```javascript
+    
+    var Software = function(version){
+        var obj = Object.create(Software.methods);  //Delegation of failed lookups than copying all the methods to object
+        obj.ver=version;
+        return obj;
+    }; 
+    
+    Software.methods = {
+        upgrade:function(){
+            this.ver++;
+        }
+    };
+
+```
+- Whenever a function is created, it will have an object attached to it that can be used as a container for methods iff that function is used to build istances of a class.
+- The default object that comes with every function is stored at the key *.prototype* [Naming choice of language].
+
+```javascript
+    
+    var Software = function(version){
+        var obj = Object.create(Software.prototype);  
+        obj.ver=version;
+        return obj;
+    }; 
+    
+    Software.prototype.upgrgade = function(){
+        this.ver++;
+    };
+
+```
+- Using *.prototype* there will not be any change in the in memory model of the runtime. 
+- It doesn't delegate it's failed lookups to *Software.prototype* unless we specify it to do so.
+- It is just a freely provided object for storing things with no additional characteristics.
+
+```javascript
+    var JaVa = Software(9);
+```
+- Here **JaVa**'s prototype is *Software.prototype*, but **Software**'s prototype is *function.prototype*[Same for all functions]
+- **Software** has a special relationship with *Software.prototype* [When Software function runs then delegation happens].
+- *.prototype* object has a *.constructor* property pointing to the function it came attached to.
+- **Software.prototype.constructor === Software**
+
+### PSEUDOCLASSICAL PATTERNS
+----------------------------
+- Instantiating a new object, runs the function in constructor mode. [**new Software()**]
+```javascript
+    var Software = function(version){
+        this = Object.create(Software.prototype); //Interpreter adds these lines to your code
+        return this;                              //When run in constructor mode
+    };
+```
+- Pseudoclassical version is just adding a layer of syntactical convenience
+- Primary difference would be number of performance optimizations javascript engine implemented that apply during this usage.
+
+    
