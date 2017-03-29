@@ -273,4 +273,6 @@ fn(3,4);           //this is bound to 'global' object
 - Pseudoclassical version is just adding a layer of syntactical convenience
 - Primary difference would be number of performance optimizations javascript engine implemented that apply during this usage.
 
-    
+### SUPER CLASS AND SUB CLASS
+-----------------------------
+
