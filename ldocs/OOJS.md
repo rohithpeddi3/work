@@ -276,3 +276,26 @@ fn(3,4);           //this is bound to 'global' object
 ### SUPER CLASS AND SUB CLASS
 -----------------------------
 
+```javascript
+    var JaVa = new Software(8);
+    jaVa.upgrade();
+    
+    var SprIng = new Framework(8);
+    SprIng.upgrade();
+    SprIng.alter();
+    
+    var Software = function(version){
+        this.ver=version;
+    };
+    
+    Software.prototype.upgrade = function(){
+        this.ver++;
+    };
+    
+    var Framework=function(version){
+        Software.call(this,version);    //Run Software function in the context of Framework function
+    };
+    
+    Framework.prototype = Object.create(Software.prototype);    //Wiring up the subclass prototype objects.
+```
+- *.call* is used to run a function in the required context.
