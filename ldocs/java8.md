@@ -34,19 +34,19 @@
 ```
 
 - FIT INTO JAVA PHILOSOPHY: What does having lambda mean to java? 
-      - Java always cares about backward compatibility.
-      - Lambdas backed by single abstract method interfaces. Makes them compatible with old code.
+  - Java always cares about backward compatibility.
+  - Lambdas backed by single abstract method interfaces. Makes them compatible with old code.
 
 - UNDER THE HOOD: What does the compiler do when it sees a lamda expression?
-      - [x] It constructs an anonymous inner class of how it would be implemented if it were java7.           
-          JAVA7 : If it any anonymous inner classes are present, jvm generates two .class files
-          By the same logic if lambdas were implemented many times, equivalent number of objects has to be created.
-          Although this is what other programming languages like groovy, scala which use jvm do. But not java (Bigger scale of usage
+  - [x] It constructs an anonymous inner class of how it would be implemented if it were java7.           
+      JAVA7 : If it any anonymous inner classes are present, jvm generates two .class files
+      By the same logic if lambdas were implemented many times, equivalent number of objects has to be created.
+      Although this is what other programming languages like groovy, scala which use jvm do. But not java (Bigger scale of usage
 [Anonymous inner classes]-> [Annonymous classes] -> [Big jar files] -> [Memory footprint] -> [Garbage collection] -> [Runtime footprint]      
-      - [ ] Invoke dynamic implemented for dynamically typed languages running on jvm      
-          It means you can attach and detach to the function to be invoked dynamically, finally function pointers are available at the 
-          program level. Lambdas are implemented using INVOKE DYNAMIC.
-          So, lambdas doesn't have the overhead of creating objects.
+  - [ ] Invoke dynamic implemented for dynamically typed languages running on jvm      
+      It means you can attach and detach to the function to be invoked dynamically, finally function pointers are available at the 
+      program level. Lambdas are implemented using INVOKE DYNAMIC.
+      So, lambdas doesn't have the overhead of creating objects.
           
              They can become: 
               1. A static method
@@ -95,14 +95,15 @@
 - DONOT HAVE LOGIC IN THE LAMBDA, PUT IT IN A FUNCTION AND CALL THE FUNCTION FROM THE LAMBDA.
 
 ### METHOD REFERENCE: Only useful in the most trivial case, receiving a parameter and pass through.
-    - Parameter as an argument
-    - Parameter as an argument to static method
-    - Parameter as a target
-    - Two parameters as arguments
-    - Two parameters one as target and the other as argument    
-    - LIMITATIONS:
-        - If you want to do anything with the received argument, its not right
-        - If compiler finds a conflict between static and instance methods to apply method reference.
+
+- Parameter as an argument
+- Parameter as an argument to static method
+- Parameter as a target
+- Two parameters as arguments
+- Two parameters one as target and the other as argument    
+- LIMITATIONS:
+    - If you want to do anything with the received argument, its not right
+    - If compiler finds a conflict between static and instance methods to apply method reference.
 
 ```java
   numbers.forEach(System.out::println);
@@ -224,7 +225,7 @@
 
 - FUNCTIONS: 
   - filter:       
-      ```
+      ```java
         numbers.stream()
                .filter(e -> e%2 == 0)
         // 0 <= number of elements in the output <= number of elements in the input
@@ -240,7 +241,7 @@
             Second parameter is of type BiFunction<R,T,R> to produce a result R.
             Specialized reduce functions : sum , collect.
       
-      ```
+      ```java
         System.out.println(
           numbers.stream()
                  .filter(e -> e%2 == 0)
@@ -250,7 +251,7 @@
   
   - collect : It is also a reduce operation.
   
-    ```
+    ```java
       public static void main(String[] args) {
         List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,3,2,4,5,3,5,6);
         
@@ -272,9 +273,8 @@
                    .collect(toSet());                
       }
     ```
-  - 
   
-    ```
+    ```java
       public class Sample{
         public static List<Person> create() {
           return new Arrays.asList(
@@ -332,8 +332,78 @@
     ```
     
 - EFFICIENCY OF STREAMS: 
+
+```java
   
+  public class Sample {
+    public static void main(String[] args){
+      List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20);      
       
+      //given an ordered list find the double of the first even number greater than 3      
+      //IMPERATIVE
+      int result = 0;
+      for(Integer e :numbers)
+        if(e > 3 && e%2 == 0 ) {
+          result = e*2;
+          break;
+        }        
+      }
+      System.out.println(result);             // 8
+      
+      
+      //FUNCTIONAL
+      System.out.println(
+        numbers.stream()
+               .filter(e -> e>3)
+               .filter(e -> e%2 == 0)
+               .map(e -> e*2)
+               .findFirst();
+      );                                      //Optional[8]   
+      
+      System.out.println(
+        numbers.stream()
+               .filter(Sample::isGT3)   |
+               .filter(Sample::isEven)  |
+               .map(Sample::doubleIt)   |------> Intermediate functions, builds the pipeline of function but no work done.
+               .findFirst();            //This triggers the function
+      );    
+      
+    }
+  }
+
+```
+- HOW MUCH WORK? 
+  - Imperative : 8 units of work
+  - Functional : Lazy evaluation, it postpones until the termial function is hit.
+                 It also performs 8 units of work
+
+- Lazy evaluations are possible only if functions don't have side effects.
+
+- CHARACTERISTICS OF STREAM
+  - Sized
+  - Ordered
+  - Distinct
+  - Sorted
+  
+```java
+    
+    numbers.stream()
+           .filter(e -> e%2 ==0 )
+           .sorted()
+           .distinct()
+           .forEach(System.out::println)
+    //sized,ordered,distinct,sorted
+    
+    //property of a stream can be changed originally or in the middle by tinkering with the process.
+    
+    //INFINITE STREAM
+    Stream.iterate(100, e -> e+1)
+    
+    //starts with 100, create a series
+    //It is an infinite stream but it is lazy, until it is triggered 
+    
+```
+- To get to know whethere something is lazy or eager looking at the return type.
       
       
       
