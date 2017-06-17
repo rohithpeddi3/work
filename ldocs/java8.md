@@ -38,12 +38,16 @@
   - Lambdas backed by single abstract method interfaces. Makes them compatible with old code.
 
 - UNDER THE HOOD: What does the compiler do when it sees a lamda expression?
-  - [x] It constructs an anonymous inner class of how it would be implemented if it were java7.           
+  - [ ] It constructs an anonymous inner class of how it would be implemented if it were java7.           
+  
       JAVA7 : If it any anonymous inner classes are present, jvm generates two .class files
       By the same logic if lambdas were implemented many times, equivalent number of objects has to be created.
-      Although this is what other programming languages like groovy, scala which use jvm do. But not java (Bigger scale of usage
-[Anonymous inner classes]-> [Annonymous classes] -> [Big jar files] -> [Memory footprint] -> [Garbage collection] -> [Runtime footprint]      
-  - [ ] Invoke dynamic implemented for dynamically typed languages running on jvm      
+      Although this is what other programming languages like groovy, scala which use jvm do. But not java (Bigger scale of usage)
+      
+[Anonymous inner classes]-> [Annonymous classes] -> [Big jar files] -> [Memory footprint] -> [Garbage collection] -> [Runtime footprint]
+
+  - [x] Invoke dynamic implemented for dynamically typed languages running on jvm      
+      
       It means you can attach and detach to the function to be invoked dynamically, finally function pointers are available at the 
       program level. Lambdas are implemented using INVOKE DYNAMIC.
       So, lambdas doesn't have the overhead of creating objects.
