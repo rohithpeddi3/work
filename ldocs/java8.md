@@ -38,15 +38,12 @@
       - Lambdas backed by single abstract method interfaces. Makes them compatible with old code.
 
 - UNDER THE HOOD: What does the compiler do when it sees a lamda expression?
-      - [x] It constructs an anonymous inner class of how it would be implemented if it were java7. 
-          
+      - [x] It constructs an anonymous inner class of how it would be implemented if it were java7.           
           JAVA7 : If it any anonymous inner classes are present, jvm generates two .class files
           By the same logic if lambdas were implemented many times, equivalent number of objects has to be created.
-          Although this is what other programming languages like groovy, scala which use jvm do. But not java (Bigger scale of usage)
-          [Anonymous inner classes] -> [Annonymous classes] -> [Big jar files] -> [Memory footprint] -> [Garbage collection] -> [Runtime footprint]
-      
-      - [ ] Invoke dynamic implemented for dynamically typed languages running on jvm
-      
+          Although this is what other programming languages like groovy, scala which use jvm do. But not java (Bigger scale of usage
+[Anonymous inner classes]-> [Annonymous classes] -> [Big jar files] -> [Memory footprint] -> [Garbage collection] -> [Runtime footprint]      
+      - [ ] Invoke dynamic implemented for dynamically typed languages running on jvm      
           It means you can attach and detach to the function to be invoked dynamically, finally function pointers are available at the 
           program level. Lambdas are implemented using INVOKE DYNAMIC.
           So, lambdas doesn't have the overhead of creating objects.
@@ -97,27 +94,77 @@
 - While lamdas are cute, keep it that way.
 - DONOT HAVE LOGIC IN THE LAMBDA, PUT IT IN A FUNCTION AND CALL THE FUNCTION FROM THE LAMBDA.
 
-- METHOD REFERENCE: Only useful in the most trivial case, receiving a parameter and pass through.
-    - If you want to do anything with the received argument, its not right.
+### METHOD REFERENCE: Only useful in the most trivial case, receiving a parameter and pass through.
+    - Parameter as an argument
+    - Parameter as an argument to static method
+    - Parameter as a target
+    - Two parameters as arguments
+    - Two parameters one as target and the other as argument    
+    - LIMITATIONS:
+        - If you want to do anything with the received argument, its not right
+        - If compiler finds a conflict between static and instance methods to apply method reference.
 
 ```java
   numbers.forEach(System.out::println);
   //System.out is an object and we are calling the method println, it is an instance method on the object.
+  //Passing the parameter 'e' as an argument to an instance method 'println' with 'System.out' as the target.
   
   numbers.stream()
           //.map(e -> String.valueOf(e))
          .map(String::valueOf)              //Reference to a static method
-         .forEach(System.out::println)      //Reference to an instance method
-         
+         .forEach(System.out::println)      //Reference to an instance method   
+  //Passing parameter as an argument to a static method      
          
   numbers.stream()
-         //.map(e -> e.toString())
-         .map()
+         .map(e -> String.valueOf(e))
+         .map(String::toString)             //Reference to an instance method
          .forEach(System.out::println);
+  //Passed parameter 'e' has become a target and we are using 'toString' method on it. 
+  //Based on the context we often get to know as we work along.      
+   
+   System.out.println(
+    numbers.stream()
+        .reduce(0, (total,e) -> Integer.sum(total,e)) );
+   //Method references are only useful if order is the same.     
+   
+   System.out.println(
+    numbers.stream()
+        .reduce(0, Integer::sum));
+        
+   System.out.println(
+    numbers.stream()
+        .map(String::valueOf)
+        .reduce("", String::concat));        
+   //First parameter is the target and the other is an argument
   
 ```
 
-      
+### FUNCTION COMPOSITION
+
+```java
+    
+    //IMPERATIVE:
+    int result = 0;
+    for(int e:numbers) {
+      if(e%2 == 0) result += e*2
+    }
+    
+    //DECLARATIVE
+    //Stream can be thought of as an interator
+    numbers.stream()
+           .filter(e -> e%2 == 0)
+           .map(e -> e*2)
+           .reduce(0, Integer::sum);
+    
+    numbers.stream()
+           .filter(e -> e%2 == 0)
+           .mapToInt(e -> e*2)
+           .sum();    
+    
+```
+
+- This is called functional composition, it can also be called as a pipeline.
+
       
       
       
