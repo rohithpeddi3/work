@@ -165,6 +165,176 @@
 
 - This is called functional composition, it can also be called as a pipeline.
 
+- Class that measures the actual time taken for a runnable block to run and prints it to console.
+
+```java
+   public class Timeit {
+    public static code (Runnable block) {
+      long start = System.nanoTime();
+      try{
+        block.run();
+      } finally {
+        long end = System.nanoTime();
+        System.out.println("Time taken(s): "+ (end - start)/1.0e9);
+      }
+    }
+   }
+```
+
+```java
+   public class Sample {
+    public static void main(String[] args) {
+      List<Integers> numbers = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+      
+      Timeit.code(() -> 
+        System.out.println(
+          numbers.stream()
+                 .filter(e -> e%2 == 0)
+                 .mapToInt(Sample::compute)
+                 .sum()));                          //5.027041076
+                 
+       Timeit.code(() -> 
+        System.out.println(
+          numbers.parallelStream()
+                 .filter(e -> e%2 == 0)
+                 .mapToInt(Sample::compute)
+                 .sum()));                          //1.0150950506
+      
+    }
+    
+    public static int compute(int number) {
+      //assume this is time intensive
+      try{ thread.sleep(1000);} catch(Exception) {}
+      return number*2;
+    }
+    
+   }
+```
+
+- Be extemely careful with parallel stream.
+- Just because you can parallelise, you don't have to parallelize. [Compromising on all threads to get your result faster]
+- When the data size is big ennough
+- When the task computation is big enough to get a benefit in performance.
+
+### STREAMS
+
+- They are an abstraction. 
+- It is not a physical object with data, it is a bunch of functions.
+- It is a non mutating pipeline. [Avoid shared mutability]
+
+- FUNCTIONS: 
+  - filter:       
+      ```
+        numbers.stream()
+               .filter(e -> e%2 == 0)
+        // 0 <= number of elements in the output <= number of elements in the input
+        // input: Stream<T> takes Predicate<T>
+      ```
+  - map : transforms values 
+          number of output = number of input.
+          no guarantee on the type of output with respect to the type of the input.
+          parameter: Stream<T> map takes Function<T,R> to return Sream<R>.
+  
+  - reduce: on Stream<T> takes two parameters
+            First parameter is of type T
+            Second parameter is of type BiFunction<R,T,R> to produce a result R.
+            Specialized reduce functions : sum , collect.
+      
+      ```
+        System.out.println(
+          numbers.stream()
+                 .filter(e -> e%2 == 0)
+                 .map(e -> e*2.0)
+                 .reduce(0.0, (carry,e) -> carry+e));
+      ```
+  
+  - collect : It is also a reduce operation.
+  
+    ```
+      public static void main(String[] args) {
+        List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,3,2,4,5,3,5,6);
+        
+        //double the even values and put that into a list
+        //wrong way to do this.
+        List<Integer> doubleOfEven = new ArrayList<>();
+        numbers.stream()
+               .filter(e -> e%2 == 0)
+               .map(e -> e*2)
+               .forEach(e -> doubleOfEven.add(e))
+        //mutability is ok, sharing is nice, shared mutability is devils work.
+        //CONCURRENCY PROBLEMS MAY RISE AS THAT VARIABLE IS SHARED.
+        
+        //right way to do this
+        Set<Integer> doubleOfEven2 = 
+            numbers.stream()
+                   .filter(e -> e%2 == 0)
+                   .map(e -> e*2)
+                   .collect(toSet());                
+      }
+    ```
+  - 
+  
+    ```
+      public class Sample{
+        public static List<Person> create() {
+          return new Arrays.asList(
+            new Person("Joey", Gender.MALE, 23),
+            new Person("Chandler", Gender.MALE, 24),
+            new Person("Monica", Gender.FEMALE, 22),
+            new Person("Rachel", Gender.FEMALE, 22),
+            new Person("Ross", Gender.MALE, 24),
+            new Person("Phoebe", Gender.FEMALE, 23)
+          );
+        }
+        
+        public static void main(String[] args) {
+          List<Person> people = createPeople();
+          //create a map with name and age as key and the person as value          
+          people.stream()
+                .collect(toMap(
+                  person -> person.getName()+"-"+person.getAge(),
+                  person -> person
+                ));
+                
+          //given a list of people, create a map where their name is the key and value is 
+          //all the people with that name
+          
+           people.stream()
+                 .collect(groupingBy(Person::getName));
+                 
+          //given a list of people, create a map where their name is the key and value is 
+          //all the ages with that name.
+          
+           people.stream()
+                 .collect(groupingBy(Person::getName, mapping(Person::getAge, toList())));        
+          
+        }
+        
+      }
+    ```
+          
+    ```
+    both filter and map stay within their swim lanes.
+    but reduce cuts across swimlanes.
+            
+            filter        map               reduce
+                                             0.0
+    -------------------------------------     \    
+    x1        |                                 \
+    -------------------------------------         \
+    x2       ->           x2'           ->          +
+    -------------------------------------             \     
+    x3        |                                         \
+    -------------------------------------                 \
+    x4       ->           x4'           ->                  +
+    -------------------------------------
+    
+    ```
+    
+- EFFICIENCY OF STREAMS: 
+  
+      
+      
       
       
       
