@@ -407,7 +407,7 @@
     //It is an infinite stream but it is lazy, until it is triggered 
     
 ```
-- To get to know whethere something is lazy or eager looking at the return type.
+- To get to know whethere something is lazy or eager look at the return type.
       
       
       
