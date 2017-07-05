@@ -122,7 +122,8 @@ Why not "just" use **MethodHandle**?
 - Desugar lambdas expressions to methods
 - Represent lambdas using MethodHandle in bytecode signatures
 
-COMPILER TRANSLATION:
+#### COMPILER TRANSLATION:
+-------------------------
 
 ```java
   private static boolean lambda$1 (int minAge, Person p) { return p.age < minAge; }
@@ -182,7 +183,7 @@ Basic idea: let some **language logic** determine **call target**
            (invoke dynamic)                  (invoke virtual)
 
 
-- **INVOKEDYNAMIC** started out as a tool for dynamic languages
+**INVOKEDYNAMIC** started out as a tool for dynamic languages
 
   - A typical application would be invocating a method like 
     ```
@@ -245,6 +246,7 @@ Its not just for **dynamic languages** anymore
   - Subsequent captures by pass the (slow) linkage path.
 
 #### DESUGARING LAMBDAS TO METHODS:
+----------------------------------
 
 - First, we desugar lambda to a method, as before
 
@@ -260,6 +262,7 @@ Its not just for **dynamic languages** anymore
   ```
 
 #### FACTORIES AND METAFACTORIES:
+--------------------------------
 
 Generate an invoke dynamic call site, which when called, returns the lambda
 
@@ -277,6 +280,7 @@ Generate an invoke dynamic call site, which when called, returns the lambda
     ```
 
 #### TRANSLATION STRATEGIES:
+---------------------------
 
 - The metafactory could spin inner classes dynamically
   - Generate the same class the compiler would, just at runtime
@@ -289,6 +293,7 @@ Generate an invoke dynamic call site, which when called, returns the lambda
 - Or VM-private APIs to build object from scratch.
 
 #### INDY THE ULTIMATE PROCRASTINATION AID:
+------------------------------------------
 
 - By deferring the code generation choice to runtime, it becomes a pure implementation detail
 
@@ -317,6 +322,7 @@ Generate an invoke dynamic call site, which when called, returns the lambda
     - MF links to constructor for generated class.
 
 #### PERFORMANCE COSTS
+----------------------
 
 - Any translation scheme imposes costs at several levels
 
@@ -352,7 +358,8 @@ NOT JUST FOR THE JAVA LANGUAGE
     
     INTRINSIFICATION OF CAPTURE + INLINE + ESCAPE ANALYSIS
 
-SERIALIZATION:
+#### SERIALIZATION:
+------------------
 
   ```java
 	  interface Foo extends Serializable {
