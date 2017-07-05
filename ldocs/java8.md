@@ -95,7 +95,7 @@
 
 What does having lambda mean to java? 
   - Java always cares about backward compatibility.
-  - Lambdas backed by single abstract method interfaces. Makes them compatible with old code.
+  - Lambdas backed by single abstract method interfaces [Functional interfaces]. Makes them compatible with old code.
 
 #### UNDER THE HOOD: 
 
@@ -120,9 +120,62 @@ What does the compiler do when it sees a lamda expression?
               2. Instance method
               3. Routing of invoke dynamic to an existing method in other class.
               
-[For complete implementation details.](https://github.com/rohithpeddi3/work/blob/master/ldocs/Lambdas.md)
+- Check here for complete implementation [details.](https://github.com/rohithpeddi3/work/blob/master/ldocs/Lambdas.md)
 
-- BENEFIT FROM LAMBDAS: 
+- Functional interfaces provide target types for lambda expressions and method references. 
+- Each functional interface has a single abstract method, called the functional method for that functional interface, to which		 the lambda expression's parameter and return types are matched or adapted. 
+- Functional interfaces can provide a target type in multiple contexts, such as assignment context, method invocation, 
+
+```java
+     // Assignment context
+     Predicate<String> p = String::isEmpty;
+
+     // Method invocation context
+     stream.filter(e -> e.getSize() > 10)...
+
+     // Cast context
+     stream.map((ToIntFunction) e -> e.getSize())...
+ ```
+
+#### BENEFIT FROM LAMBDAS: 
+
+Java 7: LOOPING EXTERNAL ITERATOR
+
+			|		|
+ 	      hasNext() |-------------->|
+			|		|
+ 		hasNext	|<--------------|
+			|		|
+			|-------------->|
+			|		|
+			|<--------------|
+			|		|
+ 		next()	|-------------->|
+			|		|
+ 		element	|<--------------|
+			|		|
+
+		Application    	   Collections
+		   code		      code
+
+Java 8: INTERNAL ITERATION
+
+				|		|
+		Build operation	|-------------->|
+				|		|
+	 			|		|
+				|		|
+				|		|
+				|		|
+				|		|
+				|		|
+	 		    	|		|
+				|		|
+	 	result		|<--------------|
+				|		|
+
+			Application     Collections
+			    code	  code
 
 ```java 
   public class Sample {
@@ -159,7 +212,7 @@ What does the compiler do when it sees a lamda expression?
     }
   }
 ```
-- Java8 has type inference but only for lamda expressions.
+- Java8 has type inference for lamda expressions.
 - While lamdas are cute, keep it that way.
 - DONOT HAVE LOGIC IN THE LAMBDA, PUT IT IN A FUNCTION AND CALL THE FUNCTION FROM THE LAMBDA.
 
@@ -229,8 +282,7 @@ What does the compiler do when it sees a lamda expression?
     numbers.stream()
            .filter(e -> e%2 == 0)
            .mapToInt(e -> e*2)
-           .sum();    
-    
+           .sum();        
 ```
 
 - This is called functional composition, it can also be called as a pipeline.
@@ -286,13 +338,38 @@ What does the compiler do when it sees a lamda expression?
 - When the data size is big ennough
 - When the task computation is big enough to get a benefit in performance.
 
+#### HIGHER ORDER FUNCTIONS:
+
+A higher order function is a function that either takes another function as argument or returns a function as its result.
+
+- Comparing not only took another function inorder to extract an index value, but also returns a new comparator.
+- Comparator was invented when a function was needed, but all java had at that time was objects.
+- Being an object was always accidental.
+
+Provide what transformation has to be made rather than how transformation occurs.
+
+**Functions with no side effects don't change the state of anything else in the program or outside world.**
+
+```java
+	private void registerHandler() {
+		button.addActionListener(event -> this.lastEvent = event);
+	}
+```
+
+- Here we save away the event parameters into a field, a more subtle way of generating side effects [assigning to variables].
+- Capturing values encourages people to write code that is free from side effects by making it harder to do so.
+
+**Whenever you pass lambda expression into the higher order functions on the stream interface, 
+you should seek to avoid side effects**.
+
 ### STREAMS
 
 - They are an abstraction. 
 - It is not a physical object with data, it is a bunch of functions.
 - It is a non mutating pipeline. [Avoid shared mutability]
+- It follows BUILDER PATTERN, there are a sequence of calls that set up properties or configuration, followed by a single call to a build method.
 
-- FUNCTIONS: 
+FUNCTIONS: 
   - filter:       
       ```java
         numbers.stream()
@@ -309,6 +386,15 @@ What does the compiler do when it sees a lamda expression?
             First parameter is of type T
             Second parameter is of type BiFunction<R,T,R> to produce a result R.
             Specialized reduce functions : sum , collect.
+  
+  - flatMap: As it can be guessed by its name, is the combination of a map and a flat operation. 
+  	     That means that you first apply a function to your elements, and then flatten it. 
+	     Stream.map only applies a function to the stream without flattening the stream.
+	     To understand what flattening a stream consists in, consider a structure like 
+	     	[ [1,2,3],[4,5,6],[7,8,9] ] which has "two levels". 
+	     Flattening this means transforming it in a "one level" structure : [ 1,2,3,4,5,6,7,8,9 ].
+
+  
       
       ```java
         System.out.println(
@@ -474,7 +560,67 @@ What does the compiler do when it sees a lamda expression?
 ```
 - To get to know whethere something is lazy or eager look at the return type.
       
-      
+#### DEFAULT METHODS:
+
+- Nightmare of all third party collections libraries being broken as they don't implement stream method is averted by 				introduction of a new language construct called default methods.
+- If any of my children do not have a stream method, they can use this one.
+
+- They follow slightly different inheritance rules.
+- Always class wins, allowing classes to win simplifies a lot of inheritance scenarios, they are designed to allow binary 			compatible API evolution.
+
+THREE GOLDEN RULES FOR DEFAULT METHODS/MULTIPLE INHERITANCE:
+
+- Any class wins over any interface.
+  - So if there is a method with a body or an abstract declaration, in the superclass chain, we ignore the interface completely
+
+- Subtype wins over supertype.
+  - If two interfaces are competiting to providedefault methods and one interface extends the other, subclass wins.
+
+- No rule 3
+  - If both the above don't give an answer then the sub class must either implement the method or declare it abstract.
+  
+#### PARALLELISM VS CONCURRENCY
+
+- Concurrency arises when two tasks are making progress at overlapping time periods.
+- Parallelism arises when two tasks are happening at literally the same time such as on a multi core CPU.
+
+- Data parallelism works really well when same operations are performed on a lot of data.
+- Problem needs to be decomposed into subsections of data and then the answers from each subsection can be composed.
+
+- Amdahl's law is a simple rule that predicts the theretical maximum speed up on a machine.
+
+CAVEATS:
+
+- To work correctly in parallel, initial element has to be the identity value of the combining function in reducing operation
+- For reduce, combining function has to be associative.
+- Avoid usage of locks, streams framework deals with any necessary usage of synchronization.
+- Parallel streams internally uses fork/join to break down the problem set.
+
+TO PARALLEL CONVERSION:
+
+The good - Arrays, Arraylist, Intstream range
+The okay - Hashset, Treeset
+The bad  - LinkedList 
+
+FACTORS INFLUENCING PARALLEL PERFORMANCE:
+
+- DATA SIZE
+- SOURCE DATA STRUCTURE
+- VALUES ARE PACKED?
+- NUMBER OF AVAILABLE CORES
+- PROCESSING TIME ON ELEMENT
+
+- For a better testable code, any method that would have been written as a lambda expressioncan also be written as a 
+	normal method and then directly referenced elsewhere in code using method references.
+
+```java
+	Set<String> nationalities = 
+		album.getMusicians()
+			 .filter(artist -> artist.getName().startsWith("The"))
+			 .map(Artist::getNationality)
+			 .peek(nation -> System.out.pritnln("Found Nationality: "+ nation))
+			 .collection(Collectors.<String>toSet()); 
+```
       
       
       
