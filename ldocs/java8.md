@@ -1,5 +1,8 @@
 # JAVA 8
 
+- PROBLEM: Lack of efficient operations over large collections of data.
+- SOLUTION: A language change, birth of lambda expressions.
+
 ```java
   public class Sample {
     public static void main(String args[]) {
@@ -14,8 +17,8 @@
     }
   }
 ```
-
 - INTENTION - run that simple one line (But we constructed an object by wrapping that line in it to execute)
+- This code is fairly hard to read because it obscures the programmers intent. 
 
 ```java
   public class Sample {
@@ -33,11 +36,71 @@
   }
 ```
 
-- FIT INTO JAVA PHILOSOPHY: What does having lambda mean to java? 
+-	Object oriented programming is mostly about abstracting over data, while functional programming is mostly about abstracting over behaviour.
+
+### Why lambdas?
+
+- Lambda expressions provide a compact way of passing around behaviour
+
+- Provide libraries a path to multicore
+  - Parallel friendly libraries need internal iteration
+  - Internal iteration needs a concise code-as-data mechanism 
+
+- Empower library developers
+  - Enable a higher degree of cooperation between libraries and client code
+
+- Java is the lone holdout among mainstream OO languages at this point to not have closures, So they did it!
+  - Closure means to have an environment of its own and have atleast a single bound variable in that environment.
+  - In Java, closure is a block of code that can be referenced with access to the variables in the enclosed scope. 
+
+- Inner classes give us some of these benefits, but are too clunky.
+
+### DIFFERENT TYPES:
+
+- Lambdas always capture values not variables.
+
+```java
+  Runnable noArguments = () -> System.out.println("Hello Lambda!");
+  
+  ActionListener oneArgument = event -> System.out.println("button clicked!");
+  
+  Runnable multiStatement = () -> {
+	System.out.println("Hello");
+	System.out.pritnln("Lambda!");	
+  }
+
+  BinaryOperator<Long> add = (x,y) -> x + y;
+  //This line of code doesn't add up, instead creates a function that adds together two numbers.
+
+  BinaryOperator<Long> addExplicit = (Long x, Long y) -> x + y;
+
+  final String name = "I am not variable, but a value";
+
+	button.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent event) {
+			System.out.println(name);
+		}
+	});  
+```
+- The target type of the lambda expression is the type of the context in which the lambda expression appears.
+
+	> Its not quite new, Array initializers in java have always been inferred from their contexts, 
+    another example is null, its type is known only after is assigned to something.
+
+- Earlier in anonymous inner classes, you cannot access the variables inside an inner class unless they are final.
+- But java 8 has introduced a facility to access effectively final variables.
+
+### FIT INTO JAVA PHILOSOPHY: 
+-----------------------------
+
+What does having lambda mean to java? 
   - Java always cares about backward compatibility.
   - Lambdas backed by single abstract method interfaces. Makes them compatible with old code.
 
-- UNDER THE HOOD: What does the compiler do when it sees a lamda expression?
+#### UNDER THE HOOD: 
+
+What does the compiler do when it sees a lamda expression?
+
   - [ ] It constructs an anonymous inner class of how it would be implemented if it were java7.           
   
       JAVA7 : If it any anonymous inner classes are present, jvm generates two .class files
@@ -48,14 +111,16 @@
 
   - [x] Invoke dynamic implemented for dynamically typed languages running on jvm      
       
-      It means you can attach and detach to the function to be invoked dynamically, finally function pointers are available at the 
-      program level. Lambdas are implemented using INVOKE DYNAMIC.
+      It means you can attach and detach to the function to be invoked dynamically, 
+      finally function pointers are available at the program level. Lambdas are implemented using INVOKE DYNAMIC.
       So, lambdas doesn't have the overhead of creating objects.
           
              They can become: 
               1. A static method
               2. Instance method
               3. Routing of invoke dynamic to an existing method in other class.
+              
+[For complete implementation details.](https://github.com/rohithpeddi3/work/blob/master/ldocs/Lambdas.md)
 
 - BENEFIT FROM LAMBDAS: 
 
