@@ -139,44 +139,6 @@ What does the compiler do when it sees a lamda expression?
 
 #### BENEFIT FROM LAMBDAS: 
 
-Java 7: LOOPING EXTERNAL ITERATOR
-
-			|		|
- 	      hasNext() |-------------->|
-			|		|
- 		hasNext	|<--------------|
-			|		|
-			|-------------->|
-			|		|
-			|<--------------|
-			|		|
- 		next()	|-------------->|
-			|		|
- 		element	|<--------------|
-			|		|
-
-		Application    	   Collections
-		   code		      code
-
-Java 8: INTERNAL ITERATION
-
-				|		|
-		Build operation	|-------------->|
-				|		|
-	 			|		|
-				|		|
-				|		|
-				|		|
-				|		|
-				|		|
-	 		    	|		|
-				|		|
-	 	result		|<--------------|
-				|		|
-
-			Application     Collections
-			    code	  code
-
 ```java 
   public class Sample {
     public static void main(String[] args) {
@@ -368,6 +330,45 @@ you should seek to avoid side effects**.
 - It is not a physical object with data, it is a bunch of functions.
 - It is a non mutating pipeline. [Avoid shared mutability]
 - It follows BUILDER PATTERN, there are a sequence of calls that set up properties or configuration, followed by a single call to a build method.
+
+
+Java 7: LOOPING EXTERNAL ITERATOR
+
+			|		|
+ 	      hasNext() |-------------->|
+			|		|
+ 		hasNext	|<--------------|
+			|		|
+			|-------------->|
+			|		|
+			|<--------------|
+			|		|
+ 		next()	|-------------->|
+			|		|
+ 		element	|<--------------|
+			|		|
+
+		Application    	   Collections
+		   code		      code
+
+Java 8: INTERNAL ITERATION
+
+				|		|
+		Build operation	|-------------->|
+				|		|
+	 			|		|
+				|		|
+				|		|
+				|		|
+				|		|
+				|		|
+	 		    	|		|
+				|		|
+	 	result		|<--------------|
+				|		|
+
+			Application     Collections
+			    code	  code
 
 FUNCTIONS: 
   - filter:       
